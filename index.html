@@ -62,7 +62,7 @@
         display: grid;
         place-content: center;
         overflow: hidden;
-        user-select: none; /* Proteção adicional contra seleção de texto */
+        user-select: none;
     }
 
     .playerRAU {
@@ -369,7 +369,7 @@
 
         <div class="main">
             <div class="main_left">
-
+                <!-- QUADRO DO DJ COM A FOTO PADRÃO INICIAL -->
                 <div class="dj_container_square">
                     <div id="dj_profile">
                         <img id="panel_art_img" src="https://i.imgur.com/4CSVhA1.png" style="width: 145px !important; height: 145px !important; object-fit: cover !important; display: block !important;">
@@ -431,31 +431,32 @@
     <script id="sonic_js" data-port="8248" src="https://sp0.redeaudio.com/cp/widgets.js"></script>
 
     <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        const _0x64a = "aHR0cHM6Ly9zcDAucmVkZWF1ZGlvLmNvbToxMDgyMi87dHlwZT1tcDM=";
+        const _0x64b = "aHR0cHM6Ly9zcDAucmVkZWF1ZGlvLmNvbToxMDgyMi9zdGF0cz9qc29uPTE=";
+        (function() {
+            const audioOriginal = window.Audio;
+            const fetchOriginal = window.fetch;
+            const sE = "https://sp0.redeaudio.com:8248/stream";
+            const aE = "https://sp0.redeaudio.com/cp/get_info.php?p=8248";
+            
+            window.Audio = function(url) {
+                return new audioOriginal(url);
+            };
+            window.fetch = function(url, options) {
+                return fetchOriginal.apply(this, arguments);
+            };
+        })();
 
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 ||
-                (e.ctrlKey && e.shiftKey && e.keyCode == 73) ||
-                (e.ctrlKey && e.shiftKey && e.keyCode == 67) ||
-                (e.ctrlKey && e.shiftKey && e.keyCode == 74) ||
-                (e.ctrlKey && e.keyCode == 85)) { 
-                return false;
-            }
+        const config = { 
+            url: "https://sp0.redeaudio.com:8248/stream", 
+            api: "https://sp0.redeaudio.com/cp/get_info.php?p=8248",
+            art: "https://sp0.redeaudio.com/cp/art.php?p=8248"
         };
-
-        const _RAU_SECURE_TOKEN = "RAU-PROTECTED-STREAM-2026";
-        if (_RAU_SECURE_TOKEN !== "RAU-PROTECTED-STREAM-2026") {
-            document.body.innerHTML = "<div style='color: #ff4136; background: #000; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-size: 2rem;'>Erro de Segurança - Acesso Negado</div>";
-            throw new Error("Erro de integridade no código.");
-        }
-
-        const STREAM_URL = "https://sp0.redeaudio.com:8248/stream";
-        const STATS_API = "https://sp0.redeaudio.com/cp/get_info.php?p=8248";
-        const ART_URL = "https://sp0.redeaudio.com/cp/art.php?p=8248";
         const DEFAULT_BG = "https://i.imgur.com/4CSVhA1.png";
 
         let audio = null, audioCtx, analyser, dataArray, isPlaying = false, peaks = [];
         const numBars = 32; 
+        window.lS = "";
         let lastSong = "";
 
         const playBtn = document.getElementById('playBtn');
@@ -465,9 +466,9 @@
         const volFill = document.getElementById('vol_fill');
         const playerEl = document.getElementById('mainPlayerContainer');
 
-        function initAudio() {
+        function inicializarAudioElement() {
             if (!audio) {
-                audio = new Audio(STREAM_URL + "?nocache=" + Date.now());
+                audio = new Audio(config.url + "?nocache=" + Date.now());
                 audio.crossOrigin = "anonymous";
                 audio.volume = volSlider.value;
 
@@ -507,7 +508,7 @@
                 analyser.connect(audioCtx.destination);
                 analyser.fftSize = 128;
                 dataArray = new Uint8Array(analyser.frequencyBinCount);
-                for (let i = 0; i < numBars; i++) peaks[i] = 0;
+                for(let i=0; i<numBars; i++) peaks[i] = 0;
                 drawVisualizer();
             }
         }
@@ -554,7 +555,7 @@
         }
 
         playBtn.onclick = () => {
-            initAudio();
+            inicializarAudioElement();
         };
 
         volSlider.oninput = (e) => {
@@ -577,8 +578,7 @@
         function refreshPanelArt() {
             const artImg = document.getElementById('panel_art_img');
             if (artImg) {
-                let targetUrl = `${ART_URL}&_=${new Date().getTime()}`;
-                
+                let targetUrl = `${config.art}&_=${new Date().getTime()}`;
                 let testImg = new Image();
                 testImg.onload = function() {
                     artImg.src = targetUrl;
@@ -593,7 +593,7 @@
         function fetchRadioData() {
             let ts = new Date().getTime();
 
-            $.getJSON(`${STATS_API}&_=${ts}`, function(data) {
+            $.getJSON(`${config.api}&_=${ts}`, function(data) {
                 let listeners = data.listeners ?? data.currentlisteners;
                 if (listeners != null) {
                     document.getElementById('current_listeners').innerText = String(listeners).padStart(2, '0');
@@ -623,8 +623,11 @@
             fetchRadioData();
             setInterval(fetchRadioData, 10000);
             setInterval(refreshPanelArt, 15000);
-            
             setTimeout(refreshPanelArt, 1000);
+
+            setTimeout(() => {
+                inicializarAudioElement();
+            }, 500);
         };
     </script>
 </body>
