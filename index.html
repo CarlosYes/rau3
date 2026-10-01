@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Amigos Unidos</title>
+    <meta name="description" content="Player Oficial - Rádio Amigos Unidos">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="48x48">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600;700&family=Orbitron:wght@400;700&family=Roboto+Mono:wght@700&display=swap');
+
+        :root {
+            --clr-blue: #00f2ff; --clr-green: #00ff80; --clr-red: #ff4136;
+            --clr-yellow: #fbff00; --clr-pink: #ff00ea; --clr-orange: #ff8000;
+            --primary: var(--clr-blue);
+        }
+
+        @keyframes chromaphase {
+            0%, 100% { --primary: var(--clr-blue); border-color: var(--clr-blue); }
+            16% { --primary: var(--clr-green); border-color: var(--clr-green); }
+            33% { --primary: var(--clr-red); border-color: var(--clr-red); }
+            50% { --primary: var(--clr-yellow); border-color: var(--clr-yellow); }
+            66% { --primary: var(--clr-pink); border-color: var(--clr-pink); }
+            83% { --primary: var(--clr-orange); border-color: var(--clr-orange); }
+        }
+
+        .playerRAU, .marquee-item, .volume_icon, .clock_time, .welcome_msg, .footer_label, #playIcon, .artist_name, .song_title, #date_text, .dj_container_square {
+            animation: chromaphase 18s infinite ease-in-out;
+            transition: all 2s ease-in-out;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .listeners_box {
+            animation: chromaphase 18s infinite ease-in-out;
+            background: var(--primary) !important;
+            border: 1.5px solid rgba(0,0,0,0.2);
+            padding: 8px 25px;
+            border-radius: 4px;
+            transition: background 2s ease-in-out;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 62.5%; }
+        
+        body {
+            width: 100%;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            display: grid;
+            place-content: center;
+            transition: background 1s ease-in-out;
+        }
+
+        .playerRAU {
+            width: 66.2rem;
+            height: 40.4rem;
+            position: relative;
+            background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%), url('https://i.imgur.com/gd4eju6.jpeg');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid var(--primary);
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+        }
+
+        .top-marquee-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4rem;
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid var(--primary);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .marquee-content {
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-optimized 18s linear infinite;
+        }
+
+        @keyframes scroll-optimized {
+            0% { transform: translateX(0); }
+            83% { transform: translateX(-100%); } 
+            100% { transform: translateX(-100%); }
+        }
+
+        .marquee-item {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .main {
+            position: relative;
+            width: 100%;
+            height: 32.4rem;
+            display: flex;
+            z-index: 2;
+            padding-top: 4rem;
+        }
+        
+        .main_left {
+            flex: 1;
+            padding: 1rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .dj_container_square {
+            width: 145px !important;
+            height: 145px !important;
+            min-width: 145px !important;
+            min-height: 145px !important;
+            max-width: 145px !important;
+            max-height: 145px !important;
+            margin-left: 30px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            overflow: hidden !important;
+            background: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #sonic_art, .dj_container_square img, .dj_container_square iframe, .dj_container_square div {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+        }
+
+        .meta_static_block {
+            width: 100%;
+            padding-left: 30px;
+            margin-top: 5px;
+            margin-bottom: 2px;
+        }
+        
+        .artist_name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 270px;
+        }
+
+        .song_title {
+            font-size: 1.3rem;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 400;
+            letter-spacing: 2px;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 270px;
+            text-shadow: 1px 1px 5px #000;
+        }
+        
+        #gummyCanvas {
+            width: 300px;
+            height: 42px;
+            pointer-events: none;
+            opacity: 1;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+        }
+
+        .volume_control {
+            width: 22rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-left: 30px;
+            margin-bottom: 2px;
+        }
+
+        .volume_icon { font-size: 2.2rem; }
+        
+        .volume_progress {
+            flex: 1;
+            height: 0.6rem;
+            background: rgba(255,255,255,0.2);
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .progress_bar__inner {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            width: 80%;
+            transition: width 0.2s;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .volume_input {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: -5px;
+            pointer-events: auto;
+        }
+
+        .main_right {
+            width: 30rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-right: 2rem;
+            gap: 2rem;
+        }
+        
+        .cover_large {
+            width: 19rem;
+            height: 19rem;
+            border-radius: 50%;
+            border: 3px solid #1a1a1a;
+            overflow: hidden;
+            box-shadow: 0 0 30px var(--primary);
+        }
+
+        .cover_large__bg {
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/ja10IoZ.png') center/cover;
+            transition: background-image 0.5s ease-in-out;
+        }
+        
+        .rotating { animation: spin 12s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .listeners_text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000 !important;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            height: 8rem;
+            width: 100%;
+            background: rgba(15,15,15,0.95);
+            display: flex;
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cover_small {
+            width: 8rem;
+            height: 8rem;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cover_small_bg {
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/ja10IoZ.png') center/cover;
+            transition: background-image 0.5s ease-in-out;
+        }
+        
+        .play_pause { 
+            width: 8rem;
+            height: 8rem;
+            background: rgba(10,10,10,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 5.5rem;
+            border-right: 2px solid var(--primary);
+            transition: all 0.4s;
+        }
+        
+        #playIcon { filter: drop-shadow(0 0 12px var(--primary)); }
+        .play_pause:hover { background-color: var(--primary); }
+        .play_pause:hover #playIcon { color: #000 !important; filter: none; }
+
+        .playing_glow { animation: pulse-border 2s infinite alternate; }
+        @keyframes pulse-border {
+            from { box-shadow: inset 0 0 5px var(--primary); }
+            to { box-shadow: inset 0 0 25px var(--primary); }
+        }
+
+        .bottom_content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .footer_label {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .bottom_time_area {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .clock_time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+        }
+
+        .clock_ampm { font-size: 1.2rem; color: #999; text-transform: uppercase; }
+        .date_row { font-size: 1.1rem; margin-top: 2px; }
+        #date_text { font-weight: 600; }
+        .welcome_msg { text-transform: uppercase; font-weight: 700; margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="playerRAU" id="mainPlayerContainer">
+
+        <div class="top-marquee-container">
+            <div class="marquee-content">
+                <span class="marquee-item" id="track-marquee">A CARREGAR...</span>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="main_left">
+                <div class="dj_container_square">
+                    <div id="sonic_art"></div>
+                    <script id="sonic_js" data-port="8248" src="https://sp0.redeaudio.com/cp/widgets.js?r=387"></script>
+                </div>
+
+                <div class="meta_static_block">
+                    <span class="artist_name" id="display-artist">RADIO AMIGOS UNIDOS</span>
+                    <span class="song_title" id="display-song"></span>
+                </div>
+
+                <canvas id="gummyCanvas"></canvas>
+
+                <div class="volume_control">
+                    <i class="bx bx-volume-low volume_icon"></i>
+                    <div class="volume_progress">
+                        <div class="progress_bar__inner" id="vol_fill"></div>
+                        <input type="range" min="0" max="1" step="0.01" value="0.8" class="volume_input" id="vol_slider">
+                    </div>
+                    <i class="bx bx-volume-full volume_icon"></i>
+                </div>
+            </div>
+
+            <div class="main_right">
+                <div class="cover_large" id="cd_disc">
+                    <div class="cover_large__bg" id="largeCoverBg"></div>
+                </div>
+                <div class="listeners_box">
+                    <div class="listeners_text">OUVINTES: <span id="current_listeners">00</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="cover_small">
+                <div class="cover_small_bg" id="smallCoverBg"></div>
+            </div>
+            <div class="play_pause" id="playBtn">
+                <i class="bx bx-play" id="playIcon"></i>
+            </div>
+            <div class="bottom_content">
+                <div class="footer_info_text">
+                    <div class="footer_label">Rádio Dos Amigos Unidos</div>
+                </div>
+                <div class="bottom_time_area">
+                    <div class="clock_row">
+                        <span id="clock_h" class="clock_time">00:00</span>
+                        <span id="clock_a" class="clock_ampm">AM</span>
+                    </div>
+                    <div class="date_row">
+                        <span class="welcome_msg" id="greeting_text">BOM DIA</span>
+                        <span id="date_text">--/--/----</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const _RAU_KEY = "RAU-SECURE-STREAM-2026-KEY";
+        if (_RAU_KEY !== "RAU-SECURE-STREAM-2026-KEY") {
+            document.body.innerHTML = "<div style='color: #ff4136; background: #000; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-size: 2rem;'>Erro de Segurança</div>";
+            throw new Error("Chave inválida.");
+        }
+
+        const STREAM_URL = "https://sp0.redeaudio.com:10822/;type=mp3";
+        const API_URL = "https://sp0.redeaudio.com:10822/stats?json=1";
+
+        let audio = null, audioCtx, analyser, dataArray, isPlaying = false, peaks = [];
+        const numBars = 32; 
+        let lastSong = "";
+
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const disc = document.getElementById('cd_disc');
+        const volSlider = document.getElementById('vol_slider');
+        const volFill = document.getElementById('vol_fill');
+        const playerEl = document.getElementById('mainPlayerContainer');
+
+        function initAudio() {
+            audio = new Audio(STREAM_URL);
+            audio.crossOrigin = "anonymous";
+            audio.volume = volSlider.value;
+
+            audio.onplay = () => {
+                isPlaying = true; 
+                playIcon.className = 'bx bx-pause';
+                playBtn.classList.add('playing_glow');
+                disc.classList.add('rotating');
+                initAudioContext();
+            };
+            audio.play().catch(() => {});
+        }
+
+        function initAudioContext() {
+            if (!audioCtx && audio) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                const source = audioCtx.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                analyser.fftSize = 128;
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                for (let i = 0; i < numBars; i++) peaks[i] = 0;
+                drawVisualizer();
+            }
+        }
+
+        function drawVisualizer() {
+            const canvas = document.getElementById('gummyCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            requestAnimationFrame(drawVisualizer);
+            if (!analyser) return;
+            
+            if (isPlaying) analyser.getByteFrequencyData(dataArray);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const currentColor = window.getComputedStyle(playerEl).color;
+            const barWidth = canvas.width / numBars;
+
+            for (let i = 0; i < numBars; i++) {
+                let barHeight = isPlaying ? dataArray[i] / 4.5 : 2;
+                if (!isFinite(barHeight) || barHeight < 2) barHeight = 2;
+                
+                if (barHeight > peaks[i]) peaks[i] = barHeight;
+                else peaks[i] -= 0.5;
+
+                let x = i * barWidth;
+                ctx.fillStyle = currentColor;
+                ctx.beginPath();
+                if (ctx.roundRect) {
+                    ctx.roundRect(x, canvas.height - barHeight, barWidth - 2, barHeight, 6);
+                } else {
+                    ctx.rect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+                }
+                ctx.fill();
+
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                if (ctx.roundRect) {
+                    ctx.roundRect(x, canvas.height - peaks[i] - 2, barWidth - 2, 2, 1);
+                } else {
+                    ctx.rect(x, canvas.height - peaks[i] - 2, barWidth - 2, 2);
+                }
+                ctx.fill();
+            }
+        }
+
+        playBtn.onclick = () => {
+            if (!audio) return;
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+                playIcon.className = 'bx bx-play';
+                playBtn.classList.remove('playing_glow');
+                disc.classList.remove('rotating');
+                isPlaying = false;
+            }
+        };
+
+        volSlider.oninput = (e) => {
+            const val = e.target.value;
+            if (audio) audio.volume = val;
+            volFill.style.width = (val * 100) + "%";
+        };
+
+        function updateClock() {
+            const now = new Date();
+            const h = now.getHours();
+            const m = now.getMinutes();
+            
+            document.getElementById('clock_h').innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+            document.getElementById('clock_a').innerText = h >= 12 ? 'PM' : 'AM';
+            document.getElementById('greeting_text').innerText = h >= 5 && h < 13 ? "BOM DIA" : h >= 13 && h < 20 ? "BOA TARDE" : "BOA NOITE";
+            document.getElementById('date_text').innerText = now.toLocaleDateString('pt-PT');
+
+            if (h >= 6 && h < 12) document.body.style.background = "#0a192f";
+            else if (h >= 12 && h < 19) document.body.style.background = "#2d1400";
+            else document.body.style.background = "#050505";
+        }
+
+        function updateMetadata(songTitle, listenersCount) {
+            try {
+                if (listenersCount != null) {
+                    document.getElementById('current_listeners').innerText = String(listenersCount).padStart(2, '0');
+                }
+                
+                if (songTitle && songTitle !== lastSong) {
+                    const fullTitle = songTitle.toUpperCase().trim();
+                    const parts = fullTitle.split(" - ");
+                    const artist = parts[0] ? parts[0].trim() : fullTitle;
+                    const song = parts[1] ? parts[1].trim() : "";
+
+                    document.getElementById('display-artist').innerText = artist;
+                    document.getElementById('display-song').innerText = song;
+                    document.getElementById('track-marquee').innerText = fullTitle;
+                    
+                    const largeCover = document.getElementById('largeCoverBg');
+                    const smallCover = document.getElementById('smallCoverBg');
+                    const isAutoDJ = (artist.includes("RADIO AMIGOS UNIDOS") || artist.includes("RADIO DOS AMIGOS UNIDOS"));
+
+                    const coverUrl = isAutoDJ ? "https://i.imgur.com/aM2lxva.png" : "https://i.imgur.com/ja10IoZ.png";
+                    largeCover.style.backgroundImage = `url('${coverUrl}')`;
+                    smallCover.style.backgroundImage = `url('${coverUrl}')`;
+
+                    lastSong = songTitle;
+                }
+            } catch (err) {}
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch(`${API_URL}&race=${Date.now()}`);
+                const data = await res.json();
+                updateMetadata(data.songtitle, data.currentlisteners);
+            } catch (err) {}
+        }
+
+        window.onload = () => {
+            initAudio();
+            updateClock();
+            setInterval(updateClock, 1000);
+            fetchStats();
+            setInterval(fetchStats, 1000);
+        };
+    </script>
+</body>
+</html>
